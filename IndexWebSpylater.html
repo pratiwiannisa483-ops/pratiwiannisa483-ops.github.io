@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PayLater-Remind Dasbor 📈</title>
+    <!-- Menghubungkan ke file CSS buatan kita sendiri -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="card-container">
+        <div class="header-title">
+            <h1>SMART-Remind ✨</h1>
+            <p>Kelola hutangmu, amankan finansialmu via WhatsApp Bersama Kami</p>
+        </div>
+
+        <form id="formPaylater">
+            <div class="form-group">
+                <label>Nomor WhatsApp</label>
+                <input type="text" id="nomorWa" placeholder="Contoh: 0812345678" required>
+            </div>
+
+            <div class="form-group">
+                <label>Platform Paylater</label>
+                <input type="text" id="platform" placeholder="Shopee / GoPay / Dana" required>
+            </div>
+
+            <div class="form-group">
+                <label>Nominal Tagihan (Rp)</label>
+                <input type="number" id="nominal" placeholder="Contoh: 150.000" required>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                Mulai Proteksi Finansial Anda 🚀
+            </button>
+        </form>
+        <!-- Tambahkan ini di bawah form untuk mempermudah juri saat expo -->
+        <div class="jury-info-box">
+            <p><strong>💡 Panduan Live Demo Juri:</strong><br>
+            Masukkan nomor WA Anda, klik tombol di atas, lalu cek pesan masuk otomatis di HP Anda secara real-time.</p>
+        </div>
+        
+    </div> <!-- Batas penutup card-container -->
+    
+    <script>
+        document.getElementById('formPaylater').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const dataHutang = {
+                nomor_wa: document.getElementById('nomorWa').value,
+                nama_platform: document.getElementById('platform').value,
+                nominal: document.getElementById('nominal').value
+            };
+
+            try {
+                const kirimData = await fetch('http://localhost:3000/api/kirim-pengingat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dataHutang)
+                });
+                const hasil = await kirimData.json();
+                if (hasil.success) alert('Sukses mengirim simulasi WA!');
+            } catch (error) {
+                alert('Gagal terhubung ke server backend.');
+            }
+        });
+    </script>
+</body>
+</html>
+/* Mengatur font dasar dan warna latar belakang website */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f1f5f9;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+     padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Membuat kotak form di tengah layar */
+.card-container {
+    background-color: #ffffff;
+    padding: 40px 35px;
+    border-radius: 24px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 420px;
+    border: 1px solid #e2e8f0;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.card-container:hover {
+    transform: translateY(-2px);
+}
+
+/* Mengatur judul teks atas */
+.header-title {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.header-title h1 {
+    font-size: 28px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+    letter-spacing: -0.5px;
+}
+
+.header-title p {
+    font-size: 13,6px;
+    color: #64748b;
+    margin-top: 8px;
+    line-height: 1.5;
+}
+
+/* Mengatur jarak antar input form */
+.form-group {
+    margin-bottom: 22px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 11,5px;
+    font-weight: 700;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 8px;
+}
+
+/* Menghias kotak input teks dan angka */
+.form-group input {
+    width: 100%;
+    padding: 13px 16px;
+    box-sizing: border-box;
+    border: 2px solid #cbd5e1;
+    border-radius: 12px;
+    font-size: 15px;
+    transition: all 0.25s ease;
+}
+
+/* Efek menyala saat input diklik/fokus */
+
+.form-group input::placeholder {
+    color: #cbd5e1;
+}
+
+.form-group input:focus {
+    outline: none;
+    background-color: #ffffff;
+    border-color: #22c55e;
+    box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.15);
+}
+
+/* Menghias tombol submit hijau agar mencolok */
+.btn-submit {
+    width: 100%;
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+    color: white;
+    border: none;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0 4px 12px rgba(34, 197, 94, 0.25);
+    box-shadow: 0 4px 6px rgba(22, 163, 74, 0.1);
+    transition: all 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-submit:hover {
+    background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+    box-shadow: 0 6px 16px rgba(34, 197, 94, 0.35);
+    transform: scale(1.01);
+}
+
+.btn-submit:active {
+    transform: scale(0.99);
+}
+
+/* 7. Fitur Tambahan: Panel Panduan Khusus Juri di Bawah Form */
+.jury-info-box {
+    margin-top: 25px;
+    background-color: #f0fdf4;
+    border: 1px dashed #bbf7d0;
+    padding: 15px;
+    border-radius: 12px;
+    text-align: left;
+}
+.jury-info-box p {
+    margin: 0;
+    font-size: 12px;
+    color: #166534;
+    line-height: 1.5;
+}
+const express = require('express');
+const { Client, LocalAuth } = require('whatsapp-web.js');
+const qrcode = require('qrcode-terminal');
+const cors = require('cors');
+
+const app = express();
+app.use(express.json());
+app.use(cors());
+
+// 1. Inisialisasi WhatsApp Client
+const client = new Client({
+    authStrategy: new LocalAuth()
+});
+
+// 2. Memunculkan QR Code di Terminal untuk di-scan dengan WA HP
+client.on('qr', (qr) => {
+    console.log('--- SILAKAN SCAN QR CODE DI BAWAH INI DENGAN WHATSAPP ANDA ---');
+    qrcode.generate(qr, { small: true });
+});
+
+client.on('ready', () => {
+    console.log('WhatsApp Bot Sukses Terkoneksi dan Siap! 🚀');
+});
+
+// 3. Logika Menerima Balasan Chat (Interaktif 2 Arah)
+client.on('message', async (msg) => {
+    const pesan = msg.body.toLowerCase();
+    
+    if (pesan === 'sudah bayar') {
+        msg.reply('Terima kasih! ✨ Status tagihan Anda di website PayLater-Remind telah diperbarui menjadi LUNAS.');
+    } else if (pesan === 'cek status') {
+        msg.reply('Status Keuangan Anda saat ini: WASPADA (Ada 1 tagihan mendekati jatuh tempo). 📊');
+    }
+    // ---- TAMBAHKAN FITUR H-1 DI BAWAH INI ----
+    else if (pesan.includes('h-1') || pesan.includes('h - 1')) {
+        // Logika simulasi pembaruan jadwal di sistem
+        msg.reply('Catatan diperbarui! 👍 Jadwal pengingat otomatis dijadwalkan ulang. Bot akan kembali mengingatkan Anda tepat pada H-1 sebelum jatuh tempo. Jangan lupa disiapkan dananya ya! 💪✨');
+    } 
+    else if (pesan === 'cek status') {
+        msg.reply('Status Keuangan Anda saat ini: WASPADA (Ada 1 tagihan mendekati jatuh tempo). 📊');
+    }
+});
+
+// 4. Endpoint API untuk Menerima Data dari Form Website
+app.post('/api/kirim-pengingat', async (req, res) => {
+    const { nomor_wa, nama_platform, nominal } = req.body;
+    
+    // Format nomor HP Indonesia menjadi format internasional WA
+    const formattedNumber = nomor_wa.replace(/^0/, '62') + '@c.us';
+    
+    const pesanNotif = `⚠️ *PAYLATER-REMIND UTANG ALERT* ⚠️\n\nHalo! Catatan tagihan *${nama_platform}* Anda sebesar *Rp ${parseInt(nominal).toLocaleString('id-ID')}* telah tersimpan di website.\n\nSistem akan mengingatkan Anda H-3 sebelum jatuh tempo. Jika sudah lunas, Anda bisa langsung balas chat ini dengan mengetik *"Sudah Bayar"* untuk update otomatis. \n\nSemangat mengelola keuangan! 💪✨`;
+
+    try {
+        await client.sendMessage(formattedNumber, pesanNotif);
+        res.status(200).json({ success: true, message: 'Notifikasi WA berhasil dikirim!' });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+// Menjalankan server backend di port 3000
+client.initialize();
+app.listen(3000, () => console.log('Server Backend berjalan lancar di http://localhost:3000'));
